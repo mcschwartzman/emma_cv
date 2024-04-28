@@ -7,5 +7,3 @@ if __name__ == "__main__":
     while(True):
 
         tracker.get_position()
-
-    pass

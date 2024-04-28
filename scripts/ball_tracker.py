@@ -38,8 +38,10 @@ class BallTracker(object):
         contours = cv2.findContours(mask.copy(), cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
         contours = imutils.grab_contours(contours)
         center = None
+        radius = 0
 
         # only proceed if at least one contour was found
+
         if len(contours) > 0:
 
             # find the largest contour in the mask, then use it to compute minimum enclosing circle and centroid
@@ -62,5 +64,3 @@ class BallTracker(object):
         # show the frame to our screen
         cv2.imshow("Frame", frame)
         key = cv2.waitKey(1) & 0xFF
-
-        return
