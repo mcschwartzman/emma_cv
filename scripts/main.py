@@ -6,4 +6,8 @@ if __name__ == "__main__":
 
     while(True):
 
-        tracker.get_position()
+        ball_position = tracker.get_position()
+
+        print(ball_position)
+
+        tracker.show_frame()

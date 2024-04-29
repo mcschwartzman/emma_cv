@@ -19,14 +19,18 @@ class BallTracker(object):
 
         self.stream = VideoStream(src=0).start()
 
+        self.frame = None
+
         time.sleep(2.0)
 
     def get_position(self):
 
-        frame = self.stream.read()
+        # get the most recent frame from the video feed
+        self.frame = self.stream.read()
 
-        frame = imutils.resize(frame, width=600)
-        blurred = cv2.GaussianBlur(frame, (11,11), 0)
+        # resize and convert rgb values to hsv
+        self.frame = imutils.resize(self.frame, width=600)
+        blurred = cv2.GaussianBlur(self.frame, (11,11), 0)
         hsv_converted = cv2.cvtColor(blurred, cv2.COLOR_BGR2HSV)
 
         # construct a mask of colors within the lower and upper bounds of the Ball Tracker
@@ -42,25 +46,37 @@ class BallTracker(object):
 
         # only proceed if at least one contour was found
 
-        if len(contours) > 0:
+        if (len(contours) < 1):
 
-            # find the largest contour in the mask, then use it to compute minimum enclosing circle and centroid
-            largest_contour = max(contours, key=cv2.contourArea)
-            ((x, y), radius) = cv2.minEnclosingCircle(largest_contour)
+            print("not enough contours")
 
-            moment = cv2.moments(largest_contour)
-            center = (int(moment["m10"] / moment["m00"]), int(moment["m01"] /  moment["m00"]))
-            # only proceed if the radius meets a minimum size
+            return None
 
-        if radius > 10:
+        # find the largest contour in the mask, then use it to compute minimum enclosing circle and centroid
+        largest_contour = max(contours, key=cv2.contourArea)
+        ((x, y), radius) = cv2.minEnclosingCircle(largest_contour)
 
-            # draw the circle and centroid on the frame, then update list of tracked points
-            cv2.circle(frame, (int(x), int(y)), int(radius), (0,255,255), 2)
-            cv2.circle(frame, center, 5, (0, 0, 255), -1)
+        moment = cv2.moments(largest_contour)
+        center = (int(moment["m10"] / moment["m00"]), int(moment["m01"] /  moment["m00"]))
+        # only proceed if the radius meets a minimum size
+
+        if radius < 10:
+
+            print("circle too small")
+
+            return None
+
+        # draw the circle and centroid on the frame, then update list of tracked points
+        cv2.circle(self.frame, (int(x), int(y)), int(radius), (0,255,255), 2)
+        cv2.circle(self.frame, center, 5, (0, 0, 255), -1)
 
         # update the points queue
         self.points.appendleft(center)
 
+        return (x, y)
+
+    def show_frame(self):
+
         # show the frame to our screen
-        cv2.imshow("Frame", frame)
+        cv2.imshow("Frame", self.frame)
         key = cv2.waitKey(1) & 0xFF
