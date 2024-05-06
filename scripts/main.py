@@ -1,8 +1,12 @@
 #here we are tracking ball
 from ball_tracker import BallTracker
+from serial import Serial
+from time import sleep
+
+port = '/dev/cu.usbmodemF412FA6F2F702'  # this is the port that my arduino shows up as on my computer! yours will likely be different!
+connection = Serial(port)   
 
 if __name__ == "__main__":
-
 
     # experimental values
     yellow_lower = (255, 135, 0)
@@ -27,7 +31,23 @@ if __name__ == "__main__":
 
         ball_position = tracker.get_position()
 
-        print(ball_position)
+        if(ball_position):
+
+            x = ball_position[0]
+            y = ball_position[1]
+
+            message = "{}x{}y".format(x, y)
+
+            print("sending '{}'".format(message))
+
+            connection.write(message.encode('utf-8'))
+
+            response = connection.readline()
+
+            # if response:
+
+            #     print(reponse.decode())
+
 
         tracker.show_frame()
 
