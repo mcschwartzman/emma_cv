@@ -18,6 +18,8 @@ class BallTracker(object):
         self.points = deque(maxlen=32)
 
         self.stream = VideoStream(src=0).start()
+        #src = 0 is for usb webcam
+        #src = 1 is for built-in webcam
 
         self.frame = None
 
@@ -27,6 +29,7 @@ class BallTracker(object):
 
         # get the most recent frame from the video feed
         self.frame = self.stream.read()
+        # print(VideoStream(src=1).width_pixels)
 
         # resize and convert rgb values to hsv
         self.frame = imutils.resize(self.frame, width=600)
