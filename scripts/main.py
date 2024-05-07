@@ -4,7 +4,7 @@ from serial import Serial
 from time import sleep
 
 port = '/dev/cu.usbmodemF412FA6F2F702'  # this is the port that my arduino shows up as on my computer! yours will likely be different!
-connection = Serial(port)   
+connection = Serial(port, 115200)   
 
 if __name__ == "__main__":
 
@@ -44,9 +44,9 @@ if __name__ == "__main__":
 
             response = connection.readline()
 
-            # if response:
+            if response:
 
-            #     print(reponse.decode())
+                print(response.decode())
 
 
         tracker.show_frame()
