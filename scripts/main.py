@@ -5,9 +5,8 @@ from config import frame_center
 from serial import Serial
 from time import sleep
 
-
-port = '/dev/cu.usbmodemF412FA6F2F702'  # this is the port that my arduino shows up as on my computer! yours will likely be different!
-connection = Serial(port, 115200)   
+port = '/dev/cu.usbmodem2101'  # this is the port that my arduino shows up as on my computer! yours will likely be different!
+connection = Serial(port)   
 
 if __name__ == "__main__":
 
