@@ -32,9 +32,11 @@ if __name__ == "__main__":
 
     total_generations = 0
 
+    # define a random set of 
     sga = GeneticAlgorithm(population_cap=16, generation_size=8)
     sga.initialize_population()
 
+    # initialize ball tracker
     tracker = BallTracker(green_lower, green_upper)
 
     while(True):
@@ -42,10 +44,7 @@ if __name__ == "__main__":
         total_generations += 1
         print("{} total generations".format(total_generations))
 
-        # Step 1: define population
-
-        # Step 2: loop until ball disappears, or until out of time
-
+        # for every genome that needs to be evaluated
         for genome in sga.get_unevaluated():
 
             # send new PID values to arduino
@@ -54,43 +53,52 @@ if __name__ == "__main__":
 
             connection.write(message.encode('utf-8'))
 
+            # Wait for the ball to come into view, so that we don't just automatically fail a genome
+
             ball_tracked = tracker.get_r_theta()
             while(not ball_tracked):
                 print("waiting for ball")
                 ball_tracked = tracker.get_r_theta()
                 tracker.show_frame()
 
+            # Start the clock to evaluate!
             start_time = time()
             evaluating = True
             r_sum = 0
             r_count = 0
 
+            # loop until we're done evaluating a genome
             while(evaluating):
 
                 ball_tracked = tracker.get_r_theta()
                 tracker.show_frame()
                 current_time = time()
 
+                # as long as we see the ball...
                 if(ball_tracked):
 
                     r, theta, platform = ball_tracked
                     message = "TEL{}r{}theta{}table".format(int(r), int(theta), platform['label'])
-                    # print("sending '{}'".format(message))
+                    print("sending '{}'".format(message))
                     connection.write(message.encode('utf-8'))
 
                     r_sum += r
                     r_count += 1
-
+                
+                # ...otherwise we dropped, so add the penalty and stop evaluating this genome
                 else:
                     evaluating = False
                     r_sum += drop_penalty
 
+                # check if we haven't run out the clock on this evaluation
                 if ((current_time - start_time) >= evaluation_s):
                     evaluating = False
 
+            # safety check in case we DID fail a genome instantly (r_cound would be 0)
             if not r_count:
                 r_count = 1
 
+            # calculate the average radius (error) which is used as the genetic algorithm fitness metric
             r_average = r_sum / r_count
 
             print(r_average)
