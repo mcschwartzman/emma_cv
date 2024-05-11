@@ -32,19 +32,19 @@ def get_table(x, y, platforms):
 
         if y > platforms['platform_a_bounds']['upper_left']['y'] and y < platforms['platform_a_bounds']['lower_right']['y']:
 
-            return "1"
+            return "A"
 
     if x > platforms['platform_b_bounds']['upper_left']['x'] and x < platforms['platform_b_bounds']['lower_right']['x']:
 
         if y > platforms['platform_b_bounds']['upper_left']['y'] and y < platforms['platform_b_bounds']['lower_right']['y']:
 
-            return "2"
+            return "B"
 
     if x > platforms['platform_c_bounds']['upper_left']['x'] and x < platforms['platform_c_bounds']['lower_right']['x']:
 
         if y > platforms['platform_c_bounds']['upper_left']['y'] and y < platforms['platform_c_bounds']['lower_right']['y']:
 
-            return "3"
+            return "C"
 
     return 
 

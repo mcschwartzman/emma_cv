@@ -17,6 +17,10 @@ platforms = {
         "lower_right": {
             "x": 200,
             "y": 150
+        },
+        "center": {
+            "x": 140,
+            "y": 90
         }
     },
     "platform_b_bounds" : {
@@ -27,6 +31,10 @@ platforms = {
         "lower_right": {
             "x": 480,
             "y": 160
+        },
+        "center": {
+            "x": 400,
+            "y": 100
         }
     },
     "platform_c_bounds" : {
@@ -37,6 +45,10 @@ platforms = {
         "lower_right": {
             "x": 400,
             "y": 300
+        },
+        "center": {
+            "x": 310,
+            "y": 260
         }
     }
 }

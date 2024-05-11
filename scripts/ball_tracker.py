@@ -97,9 +97,23 @@ class BallTracker(object):
         c_end_x = platforms['platform_c_bounds']['lower_right']['x']
         c_end_y = platforms['platform_c_bounds']['lower_right']['y']
 
+        a_center_x = platforms['platform_a_bounds']['center']['x']
+        a_center_y = platforms['platform_a_bounds']['center']['y']
+        
+        b_center_x = platforms['platform_b_bounds']['center']['x']
+        b_center_y = platforms['platform_b_bounds']['center']['y']
+
+        c_center_x = platforms['platform_c_bounds']['center']['x']
+        c_center_y = platforms['platform_c_bounds']['center']['y']
+
         cv2.rectangle(self.frame, (a_start_x, a_start_y), (a_end_x, a_end_y), color=(255,0,0), thickness=2)
         cv2.rectangle(self.frame, (b_start_x, b_start_y), (b_end_x, b_end_y), color=(255,0,0), thickness=2)
         cv2.rectangle(self.frame, (c_start_x, c_start_y), (c_end_x, c_end_y), color=(255,0,0), thickness=2)
+
+        cv2.circle(self.frame, (a_center_x, a_center_y), radius=2, color=(0,0,255), thickness=-1)
+        cv2.circle(self.frame, (b_center_x, b_center_y), radius=2, color=(0,0,255), thickness=-1)
+        cv2.circle(self.frame, (c_center_x, c_center_y), radius=2, color=(0,0,255), thickness=-1)
+
 
         # show the frame to our screen
         cv2.imshow("Frame", self.frame)
