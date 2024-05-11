@@ -1,19 +1,13 @@
-# time limit on evaluation in seconds
+# time limit on evaluation in seconds, increase if we want to spend more time on each genome
 evaluation_s = 60
 
-# penalty added to the error running average if the robot drops the ball
+# penalty added to the error running average if the we drop ball, increase if you want dropping genomes to be ranked lower
 drop_penalty = 50
 
-frame_center = {
-    "x": 313,
-    "y": 189
-}  # center of frame in pixel x, y on mathew's laptop
-
-# these are simple boxes that represent the bounds of each platform
-
+# this is the port that my arduino shows up as on Mathew's computer! yours will likely be different!
 serial_port = '/dev/cu.usbmodemF412FA6F2F702'   
-# this is the port that my arduino shows up as on my computer! yours will likely be different!
 
+# these are simple boxes that represent the bounds of each platform, adjust boxes to capture platforms in frame
 platforms = {
     "platform_a_bounds" : {
         "label": "A",
