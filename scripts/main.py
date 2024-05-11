@@ -1,6 +1,6 @@
 #here we are tracking ball
 from ball_tracker import BallTracker
-from config import frame_center, serial_port, evaluation_s
+from config import frame_center, serial_port, evaluation_s, drop_penalty
 from genetic_algorithm import GeneticAlgorithm
 
 from serial import Serial
@@ -48,12 +48,22 @@ if __name__ == "__main__":
 
         for genome in sga.get_unevaluated():
 
+            # send new PID values to arduino
+            message = "PID{0}p{1}i{2}d".format(genome.chromosome['p_gain'], genome.chromosome['i_gain'], genome.chromosome['d_gain'])
+            print(message)
+
+            connection.write(message.encode('utf-8'))
+
+            ball_tracked = tracker.get_r_theta()
+            while(not ball_tracked):
+                print("waiting for ball")
+                ball_tracked = tracker.get_r_theta()
+                tracker.show_frame()
+
             start_time = time()
             evaluating = True
             r_sum = 0
             r_count = 0
-
-            print(genome)
 
             while(evaluating):
 
@@ -73,18 +83,19 @@ if __name__ == "__main__":
 
                 else:
                     evaluating = False
+                    r_sum += drop_penalty
 
                 if ((current_time - start_time) >= evaluation_s):
                     evaluating = False
 
-            if (r_count):
-                r_average = r_sum / r_count
-            else:
-                r_average = 100
+            if not r_count:
+                r_count = 1
+
+            r_average = r_sum / r_count
 
             print(r_average)
 
-            sleep(1)
+            # sleep(1)
             sga.evaluate(genome, r_average)
         
         sga.clear_unevaluated()
@@ -97,19 +108,6 @@ if __name__ == "__main__":
         sga.new_generation()
 
         sleep(2)
-
-        # Step 3: 
-
-
-
-
-            # when done evaluating, calculate average and reset these values
-
-            # if connection.in_waiting > 0:
-
-            #     response = connection.readline()
-
-            #     print(response.decode())
 
 
         

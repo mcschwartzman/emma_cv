@@ -1,5 +1,8 @@
 # time limit on evaluation in seconds
-evaluation_s = 5
+evaluation_s = 60
+
+# penalty added to the error running average if the robot drops the ball
+drop_penalty = 50
 
 frame_center = {
     "x": 313,
