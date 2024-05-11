@@ -26,27 +26,7 @@ green_upper = (64, 255, 255)
 #green_upper = (64, 255, 255) LIGHTEST
 
 
-def get_table(x, y, platforms):
 
-    if x > platforms['platform_a_bounds']['upper_left']['x'] and x < platforms['platform_a_bounds']['lower_right']['x']:
-
-        if y > platforms['platform_a_bounds']['upper_left']['y'] and y < platforms['platform_a_bounds']['lower_right']['y']:
-
-            return "A"
-
-    if x > platforms['platform_b_bounds']['upper_left']['x'] and x < platforms['platform_b_bounds']['lower_right']['x']:
-
-        if y > platforms['platform_b_bounds']['upper_left']['y'] and y < platforms['platform_b_bounds']['lower_right']['y']:
-
-            return "B"
-
-    if x > platforms['platform_c_bounds']['upper_left']['x'] and x < platforms['platform_c_bounds']['lower_right']['x']:
-
-        if y > platforms['platform_c_bounds']['upper_left']['y'] and y < platforms['platform_c_bounds']['lower_right']['y']:
-
-            return "C"
-
-    return 
 
 if __name__ == "__main__":
 
@@ -84,15 +64,12 @@ if __name__ == "__main__":
 
             # 
 
-        ball_position = tracker.get_position()
-        if(ball_position):
+        ball_tracked = tracker.get_r_theta()
+        if(ball_tracked):
 
-            x = int(ball_position[0])
-            y = int(ball_position[1])
+            r, theta, platform = ball_tracked
 
-            platform = get_table(x, y, platforms)
-
-            message = "TEL{}r{}theta{}table".format(x, y, platform)
+            message = "TEL{}r{}theta{}table".format(int(r), int(theta), platform['label'])
 
             print("sending '{}'".format(message))
 

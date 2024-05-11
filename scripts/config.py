@@ -10,6 +10,7 @@ serial_port = '/dev/cu.usbmodemF412FA6F2F702'
 
 platforms = {
     "platform_a_bounds" : {
+        "label": "A",
         "upper_left": {
             "x": 80,
             "y": 30
@@ -24,6 +25,7 @@ platforms = {
         }
     },
     "platform_b_bounds" : {
+        "label": "B",
         "upper_left": {
             "x": 320,
             "y": 40
@@ -38,6 +40,7 @@ platforms = {
         }
     },
     "platform_c_bounds" : {
+        "label": "C",
         "upper_left": {
             "x": 220,
             "y": 220
