@@ -6,6 +6,8 @@ import cv2
 import imutils
 import time
 
+from config import platforms
+
 # based heavily on https://pyimagesearch.com/2015/09/14/ball-tracking-with-opencv/
 
 class BallTracker(object):
@@ -79,6 +81,25 @@ class BallTracker(object):
         return (x, y)
 
     def show_frame(self):
+
+        a_start_x = platforms['platform_a_bounds']['upper_left']['x']
+        a_start_y = platforms['platform_a_bounds']['upper_left']['y']
+        a_end_x = platforms['platform_a_bounds']['lower_right']['x']
+        a_end_y = platforms['platform_a_bounds']['lower_right']['y']
+
+        b_start_x = platforms['platform_b_bounds']['upper_left']['x']
+        b_start_y = platforms['platform_b_bounds']['upper_left']['y']
+        b_end_x = platforms['platform_b_bounds']['lower_right']['x']
+        b_end_y = platforms['platform_b_bounds']['lower_right']['y']
+
+        c_start_x = platforms['platform_c_bounds']['upper_left']['x']
+        c_start_y = platforms['platform_c_bounds']['upper_left']['y']
+        c_end_x = platforms['platform_c_bounds']['lower_right']['x']
+        c_end_y = platforms['platform_c_bounds']['lower_right']['y']
+
+        cv2.rectangle(self.frame, (a_start_x, a_start_y), (a_end_x, a_end_y), color=(255,0,0), thickness=2)
+        cv2.rectangle(self.frame, (b_start_x, b_start_y), (b_end_x, b_end_y), color=(255,0,0), thickness=2)
+        cv2.rectangle(self.frame, (c_start_x, c_start_y), (c_end_x, c_end_y), color=(255,0,0), thickness=2)
 
         # show the frame to our screen
         cv2.imshow("Frame", self.frame)

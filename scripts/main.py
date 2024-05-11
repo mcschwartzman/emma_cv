@@ -1,13 +1,12 @@
 #here we are tracking ball
 from ball_tracker import BallTracker
-from config import frame_center
+from config import frame_center, platforms, serial_port
 from genetic_algorithm import GeneticAlgorithm
 
 from serial import Serial
 from time import sleep
 
-port = '/dev/cu.usbmodem2101'  # this is the port that my arduino shows up as on my computer! yours will likely be different!
-connection = Serial(port)   
+connection = Serial(serial_port)   
 
 # experimental values
 yellow_lower = (255, 135, 0)
@@ -26,6 +25,29 @@ green_upper = (64, 255, 255)
 #green_lower = (29, 86, 6) DARKEST
 #green_upper = (64, 255, 255) LIGHTEST
 
+
+def get_table(x, y, platforms):
+
+    if x > platforms['platform_a_bounds']['upper_left']['x'] and x < platforms['platform_a_bounds']['lower_right']['x']:
+
+        if y > platforms['platform_a_bounds']['upper_left']['y'] and y < platforms['platform_a_bounds']['lower_right']['y']:
+
+            return "1"
+
+    if x > platforms['platform_b_bounds']['upper_left']['x'] and x < platforms['platform_b_bounds']['lower_right']['x']:
+
+        if y > platforms['platform_b_bounds']['upper_left']['y'] and y < platforms['platform_b_bounds']['lower_right']['y']:
+
+            return "2"
+
+    if x > platforms['platform_c_bounds']['upper_left']['x'] and x < platforms['platform_c_bounds']['lower_right']['x']:
+
+        if y > platforms['platform_c_bounds']['upper_left']['y'] and y < platforms['platform_c_bounds']['lower_right']['y']:
+
+            return "3"
+
+    return 
+
 if __name__ == "__main__":
 
     sga = GeneticAlgorithm(population_cap=16, generation_size=8)
@@ -34,6 +56,10 @@ if __name__ == "__main__":
     tracker = BallTracker(green_lower, green_upper)
 
     while(True):
+
+        # need to have:
+        # 1. platform bounds
+        # 2. 
 
         # for genome in sga.unevaluated:
 
@@ -64,7 +90,9 @@ if __name__ == "__main__":
             x = int(ball_position[0])
             y = int(ball_position[1])
 
-            message = "TEL{}r{}theta{}table".format(x, y, "1")
+            platform = get_table(x, y, platforms)
+
+            message = "TEL{}r{}theta{}table".format(x, y, platform)
 
             print("sending '{}'".format(message))
 
