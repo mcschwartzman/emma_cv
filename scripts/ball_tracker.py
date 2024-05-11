@@ -53,7 +53,7 @@ class BallTracker(object):
 
         if (len(contours) < 1):
 
-            print("not enough contours")
+            # print("not enough contours")
 
             return None
 
@@ -67,7 +67,7 @@ class BallTracker(object):
 
         if radius < 10:
 
-            print("circle too small")
+            # print("circle too small")
 
             return None
 

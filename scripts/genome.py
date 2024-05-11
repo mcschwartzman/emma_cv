@@ -14,4 +14,4 @@ class Genome(object):
 
     def __str__(self):
 
-        return "{0}, {1}, {2}".format(self.p_gain, self.i_gain, self.d_gain)
+        return "{0}, {1}, {2}".format(self.chromosome['p_gain'], self.chromosome['i_gain'], self.chromosome['d_gain'])

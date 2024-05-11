@@ -79,6 +79,7 @@ class GeneticAlgorithm(object):
             # then add back that generation_size, so we can cull 6/8, then regen 6
 
             parents = random.sample(self.population, 2)
+            
 
             child_1 = self.crossover_pair(parents[0], parents[1])
 
@@ -105,4 +106,18 @@ class GeneticAlgorithm(object):
             result.chromosome[gene_to_mutate] = random.random() # needs to match how we generate genes in initialize_population
 
         return result
+
+    def get_unevaluated(self):
+
+        return self.unevaluated
+
+    def evaluate(self, genome, fitness_metric):
+        genome.set_fitness_metric(fitness_metric)
+        self.population.append(genome)
+
+    def clear_unevaluated(self):
+
+        self.unevaluated = []
+
+
 

@@ -1,3 +1,6 @@
+# time limit on evaluation in seconds
+evaluation_s = 5
+
 frame_center = {
     "x": 313,
     "y": 189

@@ -1,10 +1,10 @@
 #here we are tracking ball
 from ball_tracker import BallTracker
-from config import frame_center, platforms, serial_port
+from config import frame_center, serial_port, evaluation_s
 from genetic_algorithm import GeneticAlgorithm
 
 from serial import Serial
-from time import sleep
+from time import sleep, time
 
 connection = Serial(serial_port)   
 
@@ -30,6 +30,8 @@ green_upper = (64, 255, 255)
 
 if __name__ == "__main__":
 
+    total_generations = 0
+
     sga = GeneticAlgorithm(population_cap=16, generation_size=8)
     sga.initialize_population()
 
@@ -37,44 +39,71 @@ if __name__ == "__main__":
 
     while(True):
 
-        # need to have:
-        # 1. platform bounds
-        # 2. 
+        total_generations += 1
+        print("{} total generations".format(total_generations))
 
-        # for genome in sga.unevaluated:
+        # Step 1: define population
 
-        #     ball_position = tracker.get_position()
-        #     if(ball_position):
+        # Step 2: loop until ball disappears, or until out of time
 
-        #         x = int(ball_position[0])
-        #         y = int(ball_position[1])
+        for genome in sga.get_unevaluated():
 
-        #         message = "TEL{}r{}theta{}table".format(x, y, "1")
+            start_time = time()
+            evaluating = True
+            r_sum = 0
+            r_count = 0
 
-        #         print("sending '{}'".format(message))
+            print(genome)
 
-        #         connection.write(message.encode('utf-8'))
+            while(evaluating):
 
-        # state 2, evaluation mode:
+                ball_tracked = tracker.get_r_theta()
+                tracker.show_frame()
+                current_time = time()
 
-            # for each genome in unevaluated:
-                # evaluate, which means average the errors while sending telemetry to arduino
+                if(ball_tracked):
 
-        # state 3, sort population, cull, and produce new generation
+                    r, theta, platform = ball_tracked
+                    message = "TEL{}r{}theta{}table".format(int(r), int(theta), platform['label'])
+                    # print("sending '{}'".format(message))
+                    connection.write(message.encode('utf-8'))
 
-            # 
+                    r_sum += r
+                    r_count += 1
 
-        ball_tracked = tracker.get_r_theta()
-        if(ball_tracked):
+                else:
+                    evaluating = False
 
-            r, theta, platform = ball_tracked
+                if ((current_time - start_time) >= evaluation_s):
+                    evaluating = False
 
-            message = "TEL{}r{}theta{}table".format(int(r), int(theta), platform['label'])
+            if (r_count):
+                r_average = r_sum / r_count
+            else:
+                r_average = 100
 
-            print("sending '{}'".format(message))
+            print(r_average)
 
-            connection.write(message.encode('utf-8'))
+            sleep(1)
+            sga.evaluate(genome, r_average)
+        
+        sga.clear_unevaluated()
+        sga.sort_population()
+        sga.cull_population()
 
+
+        print("producing new generation")
+        
+        sga.new_generation()
+
+        sleep(2)
+
+        # Step 3: 
+
+
+
+
+            # when done evaluating, calculate average and reset these values
 
             # if connection.in_waiting > 0:
 
@@ -83,13 +112,4 @@ if __name__ == "__main__":
             #     print(response.decode())
 
 
-        tracker.show_frame()
-
         
-def xy_to_rtheta(x, y):
-
-
-
-    # the origin is the upper left of the frame
-
-    return (r, theta)
