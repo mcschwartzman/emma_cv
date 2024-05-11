@@ -80,6 +80,55 @@ class BallTracker(object):
 
         return (x, y)
 
+    def get_r_theta(self):
+
+        cartesian = self.get_position()
+
+        if not cartesian:
+
+            return None
+
+        x, y = cartesian[0], cartesian[1]
+
+        platform = self.get_table(x, y, platforms)
+
+        if not platform:
+
+            return None
+
+        center = platform['center']
+
+        leg1 = x - center['x']
+        leg2 = y - center['y']
+
+        r = np.sqrt(leg1**2 + leg2**2)
+
+        theta = np.arctan2(leg2, leg1) * 180 / np.pi
+
+        return (r, theta, platform)
+
+    def get_table(self, x, y, platforms):
+
+        if x > platforms['platform_a_bounds']['upper_left']['x'] and x < platforms['platform_a_bounds']['lower_right']['x']:
+
+            if y > platforms['platform_a_bounds']['upper_left']['y'] and y < platforms['platform_a_bounds']['lower_right']['y']:
+
+                return platforms['platform_a_bounds']
+
+        if x > platforms['platform_b_bounds']['upper_left']['x'] and x < platforms['platform_b_bounds']['lower_right']['x']:
+
+            if y > platforms['platform_b_bounds']['upper_left']['y'] and y < platforms['platform_b_bounds']['lower_right']['y']:
+
+                return platforms['platform_b_bounds']
+
+        if x > platforms['platform_c_bounds']['upper_left']['x'] and x < platforms['platform_c_bounds']['lower_right']['x']:
+
+            if y > platforms['platform_c_bounds']['upper_left']['y'] and y < platforms['platform_c_bounds']['lower_right']['y']:
+
+                return platforms['platform_c_bounds']
+
+        return 
+
     def show_frame(self):
 
         a_start_x = platforms['platform_a_bounds']['upper_left']['x']
