@@ -1,5 +1,5 @@
 # time limit on evaluation in seconds, increase if we want to spend more time on each genome
-evaluation_s = 60
+evaluation_s = 1
 
 # penalty added to the error running average if the we drop ball, increase if you want dropping genomes to be ranked lower
 drop_penalty = 50

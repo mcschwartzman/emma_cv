@@ -1,6 +1,6 @@
 #here we are tracking ball
 from ball_tracker import BallTracker
-from config import frame_center, serial_port, evaluation_s, drop_penalty
+from config import serial_port, evaluation_s, drop_penalty
 from genetic_algorithm import GeneticAlgorithm
 
 from serial import Serial
@@ -115,7 +115,7 @@ if __name__ == "__main__":
         
         sga.new_generation()
 
-        sleep(2)
+        # sleep(2)
 
 
         
