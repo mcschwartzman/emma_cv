@@ -6,7 +6,7 @@ from genetic_algorithm import GeneticAlgorithm
 from serial import Serial
 from time import sleep, time
 
-connection = Serial(serial_port)   
+connection = Serial(serial_port, 115200)   
 
 # experimental values
 yellow_lower = (255, 135, 0)
@@ -81,6 +81,11 @@ if __name__ == "__main__":
                     message = "TEL{}r{}theta{}table".format(int(r), int(theta), platform['label'])
                     print("sending '{}'".format(message))
                     connection.write(message.encode('utf-8'))
+
+                    if(connection.in_waiting):
+                        print("data available!")
+                        arduino_response = connection.readline()
+                        print(arduino_response)
 
                     r_sum += r
                     r_count += 1
