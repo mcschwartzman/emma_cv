@@ -105,6 +105,13 @@ class BallTracker(object):
 
         theta = np.arctan2(leg2, leg1) * 180 / np.pi
 
+        # swap y-axis direction
+        theta = theta * -1
+
+        # converts to absolute (from positive x-axis)
+        if (theta < 0):
+            theta = 360 + theta
+
         return (r, theta, platform)
 
     def get_table(self, x, y, platforms):

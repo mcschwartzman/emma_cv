@@ -91,19 +91,18 @@ if __name__ == "__main__":
                     # sleep(0.1)
 
                     r, theta, platform = ball_tracked
-                    message = "TEL{}r{}theta{}table\n".format(int(r), int(theta), platform['label'])
+                    message = "TEL{}r{:.1f}theta{}table".format(int(r), int(theta), platform['label'])
                     print("sending '{}'".format(message))
                     connection.write(message.encode('utf-8'))
-                    print("checking if in waiting")
                     sleep(0.1)
 
                     # while (connection.in_waiting < 3):
                     #     sleep(0.025)
 
-                    # if(connection.in_waiting > 0):
-                    #     print("data available!")
-                    #     arduino_response = connection.readline()
-                    #     print(arduino_response)
+                    if(connection.in_waiting > 0):
+                        print("data available!")
+                        arduino_response = connection.readline()
+                        print(theta, arduino_response)
 
                     r_sum += r
                     r_count += 1
