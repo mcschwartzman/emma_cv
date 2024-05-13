@@ -38,6 +38,7 @@ if __name__ == "__main__":
 
     # initialize ball tracker
     tracker = BallTracker(green_lower, green_upper)
+    sleep(1)
 
     while(True):
 
@@ -48,16 +49,26 @@ if __name__ == "__main__":
         for genome in sga.get_unevaluated():
 
             # send new PID values to arduino
-            message = "PID{0}p{1}i{2}d".format(genome.chromosome['p_gain'], genome.chromosome['i_gain'], genome.chromosome['d_gain'])
-            print(message)
+            pid_message = "PID{:.4f}p{:.4f}i{:.4f}d\n".format(genome.chromosome['p_gain'], genome.chromosome['i_gain'], genome.chromosome['d_gain'])
+            print(pid_message)
 
-            connection.write(message.encode('utf-8'))
+            connection.write(pid_message.encode('utf-8'))
+            
+
+            # while (connection.in_waiting < 3):
+            #     sleep(0.025)
+            
+            # if(connection.in_waiting > 0):
+            #     print("data available!")
+            #     arduino_response = connection.readline()
+            #     print(arduino_response)
+            
 
             # Wait for the ball to come into view, so that we don't just automatically fail a genome
 
             ball_tracked = tracker.get_r_theta()
             while(not ball_tracked):
-                print("waiting for ball")
+                # print("waiting for ball")
                 ball_tracked = tracker.get_r_theta()
                 tracker.show_frame()
 
@@ -77,15 +88,22 @@ if __name__ == "__main__":
                 # as long as we see the ball...
                 if(ball_tracked):
 
+                    # sleep(0.1)
+
                     r, theta, platform = ball_tracked
-                    message = "TEL{}r{}theta{}table".format(int(r), int(theta), platform['label'])
+                    message = "TEL{}r{}theta{}table\n".format(int(r), int(theta), platform['label'])
                     print("sending '{}'".format(message))
                     connection.write(message.encode('utf-8'))
+                    print("checking if in waiting")
+                    sleep(0.1)
 
-                    if(connection.in_waiting):
-                        print("data available!")
-                        arduino_response = connection.readline()
-                        print(arduino_response)
+                    # while (connection.in_waiting < 3):
+                    #     sleep(0.025)
+
+                    # if(connection.in_waiting > 0):
+                    #     print("data available!")
+                    #     arduino_response = connection.readline()
+                    #     print(arduino_response)
 
                     r_sum += r
                     r_count += 1
