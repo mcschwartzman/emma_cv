@@ -1,8 +1,17 @@
 # time limit on evaluation in seconds, increase if we want to spend more time on each genome
-evaluation_s = 1
+evaluation_s = 5
 
 # penalty added to the error running average if the we drop ball, increase if you want dropping genomes to be ranked lower
 drop_penalty = 50
+
+# max size of population, this should always be at least 2 more than the generation_size (otherwise you won't have enough genomes to procreate)
+population_cap = 16
+
+# max size of generation, ALSO the number of genomes to cull, so make sure this is always at least 2 less than population size
+generation_size = 8
+
+# amount of time in seconds between telemetry strings sent to arduino, should always be slightly less than the serial timeout time on the arduino
+telemetry_delay = 0.1
 
 # this is the port that my arduino shows up as on Mathew's computer! yours will likely be different!
 serial_port = '/dev/cu.usbmodemF412FA6F2F702'   
@@ -43,7 +52,7 @@ platforms = {
         "label": "C",
         "upper_left": {
             "x": 220,
-            "y": 220
+            "y": 180
         },
         "lower_right": {
             "x": 400,

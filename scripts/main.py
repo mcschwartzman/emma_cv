@@ -1,6 +1,6 @@
 #here we are tracking ball
 from ball_tracker import BallTracker
-from config import serial_port, evaluation_s, drop_penalty
+from config import serial_port, evaluation_s, drop_penalty, population_cap, generation_size, telemetry_delay
 from genetic_algorithm import GeneticAlgorithm
 
 from serial import Serial
@@ -33,7 +33,7 @@ if __name__ == "__main__":
     total_generations = 0
 
     # define a random set of 
-    sga = GeneticAlgorithm(population_cap=16, generation_size=8)
+    sga = GeneticAlgorithm(population_cap=population_cap, generation_size=generation_size)
     sga.initialize_population()
 
     # initialize ball tracker
@@ -72,6 +72,10 @@ if __name__ == "__main__":
                 ball_tracked = tracker.get_r_theta()
                 tracker.show_frame()
 
+                if(connection.in_waiting > 0):
+                    arduino_response = connection.readline()
+                    print("response: ", arduino_response)
+
             # Start the clock to evaluate!
             start_time = time()
             evaluating = True
@@ -94,7 +98,7 @@ if __name__ == "__main__":
                     message = "TEL{}r{:.1f}theta{}table".format(int(r), int(theta), platform['label'])
                     print("sending '{}'".format(message))
                     connection.write(message.encode('utf-8'))
-                    sleep(0.1)
+                    sleep(telemetry_delay)
 
                     # while (connection.in_waiting < 3):
                     #     sleep(0.025)
