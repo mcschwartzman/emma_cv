@@ -18,7 +18,7 @@ generation_size = 8
 telemetry_delay = 0.1
 
 # this is the port that my arduino shows up as on Mathew's computer! yours will likely be different!
-serial_port = '/dev/cu.usbmodem101'   
+serial_port = '/dev/cu.usbmodem1101'   
 
 # these are simple boxes that represent the bounds of each platform, adjust boxes to capture platforms in frame
 platforms = {
