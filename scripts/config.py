@@ -52,6 +52,11 @@ platforms = {
         "center": {
             "x": 310,
             "y": 260
+        },
+        "motors": {
+            "theta_7": 93,
+            "theta_8": 207,
+            "theta_9": 326
         }
     }
 }

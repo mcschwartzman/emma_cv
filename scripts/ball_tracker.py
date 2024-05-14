@@ -162,6 +162,25 @@ class BallTracker(object):
         c_center_x = platforms['platform_c_bounds']['center']['x']
         c_center_y = platforms['platform_c_bounds']['center']['y']
 
+        length=100
+
+        # angle7_start = 
+        # angle8
+        # angle9
+
+        line7_x = int(c_center_x + (length * np.cos(platforms['platform_c_bounds']['motors']['theta_7'] * -3.14 / 180)))
+        line7_y = int(c_center_y + (length * np.sin(platforms['platform_c_bounds']['motors']['theta_7'] * -3.14 / 180)))
+
+        line8_x = int(c_center_x + (length * np.cos(platforms['platform_c_bounds']['motors']['theta_8'] * -3.14 / 180)))
+        line8_y = int(c_center_y + (length * np.sin(platforms['platform_c_bounds']['motors']['theta_8'] * -3.14 / 180)))
+
+        line9_x = int(c_center_x + (length * np.cos(platforms['platform_c_bounds']['motors']['theta_9'] * -3.14 / 180)))
+        line9_y = int(c_center_y + (length * np.sin(platforms['platform_c_bounds']['motors']['theta_9'] * -3.14 / 180)))
+
+        cv2.line(self.frame,(c_center_x,c_center_y),(line7_x,line7_y),(0,255,0),2)
+        cv2.line(self.frame,(c_center_x,c_center_y),(line8_x,line8_y),(0,255,0),2)
+        cv2.line(self.frame,(c_center_x,c_center_y),(line9_x,line9_y),(0,255,0),2)
+
         cv2.rectangle(self.frame, (a_start_x, a_start_y), (a_end_x, a_end_y), color=(255,0,0), thickness=2)
         cv2.rectangle(self.frame, (b_start_x, b_start_y), (b_end_x, b_end_y), color=(255,0,0), thickness=2)
         cv2.rectangle(self.frame, (c_start_x, c_start_y), (c_end_x, c_end_y), color=(255,0,0), thickness=2)

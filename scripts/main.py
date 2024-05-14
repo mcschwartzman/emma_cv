@@ -100,9 +100,8 @@ if __name__ == "__main__":
                     #     sleep(0.025)
 
                     if(connection.in_waiting > 0):
-                        print("data available!")
                         arduino_response = connection.readline()
-                        print(theta, arduino_response)
+                        print("response: ", arduino_response)
 
                     r_sum += r
                     r_count += 1
