@@ -19,7 +19,7 @@ class GeneticAlgorithm(object):
 
         for i in range(self.population_cap):
 
-            unevaluated.append(Genome(random.random(), random.random(), random.random()))
+            unevaluated.append(Genome(random.random(), random.random(), random.random()*100))
 
         self.unevaluated = unevaluated
 
